@@ -34,6 +34,10 @@ public class SimpleNodeRenderer implements NodeRenderer {
                 if (alreadyRendered && !node.getChildren().isEmpty()) {
                     output.withStyle(Info).text(" (*)");
                 }
+                String description = node.getDescription();
+                if (description != null) {
+                    output.withStyle(Info).text(" (" + description + ")");
+                }
                 break;
             case UNRESOLVED:
                 output.withStyle(Info).text(" (n)");

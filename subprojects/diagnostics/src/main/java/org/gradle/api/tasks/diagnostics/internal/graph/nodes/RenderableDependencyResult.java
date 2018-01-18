@@ -22,6 +22,7 @@ import org.gradle.api.artifacts.result.DependencyResult;
 import org.gradle.api.artifacts.result.ResolvedDependencyResult;
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult;
 
+import javax.annotation.Nullable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -58,5 +59,11 @@ public class RenderableDependencyResult extends AbstractRenderableDependencyResu
             }
         }
         return out;
+    }
+
+    @Nullable
+    @Override
+    public String getDescription() {
+        return SelectionReasonHelper.getLastCustomDescription(dependency.getSelected().getSelectionReason());
     }
 }

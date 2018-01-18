@@ -15,8 +15,12 @@
  */
 package org.gradle.api.tasks.diagnostics.internal.graph.nodes;
 
+import org.gradle.api.artifacts.result.ComponentSelectionDescriptor;
 import org.gradle.api.artifacts.result.ComponentSelectionReason;
+import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.ComponentSelectionDescriptorInternal;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.ComponentSelectionReasonInternal;
+
+import java.util.List;
 
 public abstract class SelectionReasonHelper {
     public static String getReasonDescription(ComponentSelectionReason reason) {
@@ -25,5 +29,16 @@ public abstract class SelectionReasonHelper {
             description = null;
         }
         return description;
+    }
+
+    public static String getLastCustomDescription(ComponentSelectionReason reason) {
+        List<ComponentSelectionDescriptor> descriptions = reason.getDescriptions();
+        String result = null;
+        for (ComponentSelectionDescriptor description : descriptions) {
+            if (((ComponentSelectionDescriptorInternal)description).hasCustomDescription()) {
+                result = description.getDescription();
+            }
+        }
+        return result;
     }
 }
