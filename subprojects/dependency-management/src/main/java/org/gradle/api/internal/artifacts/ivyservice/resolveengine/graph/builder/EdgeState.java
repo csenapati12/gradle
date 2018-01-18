@@ -147,7 +147,7 @@ class EdgeState implements DependencyGraphEdge {
             targetConfigurations = dependencyMetadata.selectConfigurations(attributes, targetModuleVersion, resolveState.getAttributesSchema());
         } catch (Throwable t) {
 //                 Broken selector
-            targetNodeSelectionFailure = new ModuleVersionResolveException(dependencyMetadata.getSelector(), t);
+            targetNodeSelectionFailure = new ModuleVersionResolveException(dependencyState.getOriginalSelector(), t);
             return;
         }
         for (ConfigurationMetadata targetConfiguration : targetConfigurations) {

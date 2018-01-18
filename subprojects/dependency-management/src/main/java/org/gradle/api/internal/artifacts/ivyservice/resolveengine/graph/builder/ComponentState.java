@@ -200,9 +200,7 @@ public class ComponentState implements ComponentResolutionState, ComponentResult
 
     @Override
     public void setSelectionReason(ComponentSelectionReason reason) {
-        if (selectionReason == null || reason != VersionSelectionReasons.REQUESTED) {
-            this.selectionReason = reason;
-        }
+        this.selectionReason = reason;
     }
 
     @Override

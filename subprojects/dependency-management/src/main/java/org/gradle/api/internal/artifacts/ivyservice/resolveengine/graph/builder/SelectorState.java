@@ -21,6 +21,7 @@ import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.artifacts.result.ComponentSelectionReason;
 import org.gradle.api.internal.artifacts.ResolvedVersionConstraint;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.DependencyGraphSelector;
+import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.VersionSelectionReasons;
 import org.gradle.internal.component.model.ComponentResolveMetadata;
 import org.gradle.internal.component.model.DependencyMetadata;
 import org.gradle.internal.resolve.ModuleVersionResolveException;
@@ -73,7 +74,19 @@ class SelectorState implements DependencyGraphSelector {
     }
 
     public ComponentSelectionReason getSelectionReason() {
-        return selected == null ? idResolveResult.getSelectionReason() : selected.getSelectionReason();
+        if (selected != null) {
+            return bestReason(selected.getSelectionReason(), dependencyState.getSelectionReason());
+        }
+        return bestReason(idResolveResult.getSelectionReason(), dependencyState.getSelectionReason());
+    }
+
+    private ComponentSelectionReason bestReason(ComponentSelectionReason first, ComponentSelectionReason backup) {
+        if (first == null || first == VersionSelectionReasons.REQUESTED) {
+            if (backup != null) {
+                return backup;
+            }
+        }
+        return first;
     }
 
     public ComponentState getSelected() {
@@ -109,8 +122,7 @@ class SelectorState implements DependencyGraphSelector {
 
         selected = resolveState.getRevision(idResolveResult.getModuleVersionId());
         selected.selectedBy(this);
-        selected.setSelectionReason(dependencyState.getSelectionReason());
-        selected.setSelectionReason(idResolveResult.getSelectionReason());
+        selected.setSelectionReason(bestReason(idResolveResult.getSelectionReason(), dependencyState.getSelectionReason()));
         targetModule = selected.getModule();
         targetModule.addSelector(this);
         versionConstraint = idResolveResult.getResolvedVersionConstraint();
