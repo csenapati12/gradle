@@ -24,11 +24,10 @@ import java.util.List;
 
 public abstract class SelectionReasonHelper {
     public static String getReasonDescription(ComponentSelectionReason reason) {
-        String description = reason.getDescription();
         if (reason.isExpected() && !((ComponentSelectionReasonInternal) reason).hasCustomDescriptions()) {
-            description = null;
+            return null;
         }
-        return description;
+        return reason.getDescription();
     }
 
     public static String getLastCustomDescription(ComponentSelectionReason reason) {
