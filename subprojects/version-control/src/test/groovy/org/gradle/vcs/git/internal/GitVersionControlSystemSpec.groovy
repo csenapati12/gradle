@@ -21,7 +21,7 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.gradle.api.GradleException
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.gradle.vcs.internal.VersionRef
-import org.gradle.vcs.fixtures.GitRepository
+import org.gradle.vcs.fixtures.GitFileRepository
 import org.gradle.vcs.git.GitVersionControlSpec
 import org.junit.Rule
 import org.junit.rules.RuleChain
@@ -35,10 +35,10 @@ class GitVersionControlSystemSpec extends Specification {
     private RevCommit c2
 
     TestNameTestDirectoryProvider tmpDir = new TestNameTestDirectoryProvider()
-    GitRepository repo = new GitRepository(tmpDir.getTestDirectory())
-    GitRepository repo2 = new GitRepository(tmpDir.getTestDirectory().file('other'))
-    GitRepository submoduleRepo = new GitRepository("submodule", tmpDir.testDirectory)
-    GitRepository submoduleRepo2 = new GitRepository("submodule2", tmpDir.testDirectory)
+    GitFileRepository repo = new GitFileRepository(tmpDir.getTestDirectory())
+    GitFileRepository repo2 = new GitFileRepository(tmpDir.getTestDirectory().file('other'))
+    GitFileRepository submoduleRepo = new GitFileRepository("submodule", tmpDir.testDirectory)
+    GitFileRepository submoduleRepo2 = new GitFileRepository("submodule2", tmpDir.testDirectory)
 
     // Directory clean up needs to happen after all of the repos have closed
     @Rule
